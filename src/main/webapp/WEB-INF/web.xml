@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="auth" version="2.5" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd">
+
+	<servlet>
+		<servlet-name>errors</servlet-name>
+		<servlet-class>com.traceisys.auth.error.ErrorServlet</servlet-class>
+	</servlet>
+
+	<context-param>
+		<param-name>liquibase.changelog</param-name>
+		<param-value>db/db.changelog.xml</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>liquibase.datasource</param-name>
+		<!-- <param-value>java:comp/env/jdbc/derby-db</param-value> -->
+		<param-value>jdbc/derby-db</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>liquibase.onerror.fail</param-name>
+		<param-value>true</param-value>
+	</context-param>
+
+	<context-param>
+		<param-name>liquibase.contexts</param-name>
+		<param-value>all</param-value>
+	</context-param>
+
+	<listener>
+		<listener-class>liquibase.integration.servlet.LiquibaseServletListener</listener-class>
+	</listener>
+
+	<display-name>Auth Application</display-name>
+
+	<welcome-file-list>
+		<welcome-file>index.jsp</welcome-file>
+	</welcome-file-list>
+
+	<session-config>
+		<session-timeout>10</session-timeout>
+	</session-config>
+
+	<!-- No security -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>No Security</web-resource-name>
+			<url-pattern>/logout.jsp</url-pattern>
+		</web-resource-collection>
+	</security-constraint>
+
+	<!-- With security -->
+	<security-constraint>
+		<web-resource-collection>
+			<web-resource-name>authusers</web-resource-name>
+			<url-pattern>/index.jsp</url-pattern>
+		</web-resource-collection>
+		<auth-constraint>
+			<role-name>authusers</role-name>
+		</auth-constraint>
+		<user-data-constraint>
+			<transport-guarantee>NONE</transport-guarantee>
+		</user-data-constraint>
+	</security-constraint>
+	<login-config>
+		<auth-method>FORM</auth-method>
+		<form-login-config>
+			<form-login-page>/login.jsp</form-login-page>
+			<form-error-page>/denied.jsp</form-error-page>
+		</form-login-config>
+	</login-config>
+	<security-role>
+		<description>Auth Users</description>
+		<role-name>authusers</role-name>
+	</security-role>
+
+	<error-page>
+		<exception-type>java.lang.Throwable</exception-type>
+		<location>/errors</location>
+	</error-page>
+</web-app>

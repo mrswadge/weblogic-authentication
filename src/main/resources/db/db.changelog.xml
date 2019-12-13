@@ -1,0 +1,185 @@
+<databaseChangeLog xmlns="http://www.liquibase.org/xml/ns/dbchangelog" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext"
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.8.xsd
+    http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd">
+
+	<changeSet id="users" author="x">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="users"/>
+			</not>
+		</preConditions>
+		<createTable tableName="users">
+			<!--
+			SELECT U_PASSWORD FROM USERS WHERE LOWER(U_NAME) = LOWER(?)
+			SELECT U_NAME FROM USERS WHERE LOWER(U_NAME) = LOWER(?)
+			SELECT U_NAME FROM USERS WHERE LOWER(U_NAME) LIKE LOWER(?)
+			SELECT U_DESCRIPTION FROM USERS WHERE LOWER(U_NAME) = LOWER(?)
+			-->
+			<column name="id" type="int" autoIncrement="true" startWith="1" incrementBy="1">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="u_name" type="varchar(100)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="u_password" type="varchar(20)">
+				<constraints nullable="false" />
+			</column>
+			<column name="u_firstname" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="u_lastname" type="varchar(50)">
+				<constraints nullable="false" />
+			</column>
+			<column name="u_description" type="varchar(250)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="groups" author="x">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="groups"/>
+			</not>
+		</preConditions>
+		<!--
+		SELECT G_NAME FROM GROUPS WHERE LOWER(G_NAME) LIKE LOWER(?)
+		SELECT G_NAME FROM GROUPS WHERE LOWER(G_NAME) = LOWER(?)
+		SELECT G_DESCRIPTION FROM GROUPS WHERE LOWER(G_NAME) = LOWER(?)
+		-->
+		<createTable tableName="groups">
+			<column name="id" type="int" autoIncrement="true" startWith="1" incrementBy="1">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="g_name" type="varchar(100)">
+				<constraints nullable="false" unique="true" />
+			</column>
+			<column name="g_description" type="varchar(255)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+
+	<changeSet id="groupmembers" author="x">
+		<preConditions onFail="MARK_RAN">
+			<not>
+				<tableExists tableName="groupmembers"/>
+			</not>
+		</preConditions>
+		<!--
+		SELECT G_MEMBER FROM GROUPMEMBERS WHERE LOWER(G_NAME) = LOWER(?) AND LOWER(G_MEMBER) = LOWER(?)
+		SELECT G_NAME FROM GROUPMEMBERS WHERE LOWER(G_MEMBER) = LOWER(?)
+		-->
+		<createTable tableName="groupmembers">
+			<column name="id" type="int" autoIncrement="true" startWith="1" incrementBy="1">
+				<constraints primaryKey="true" />
+			</column>
+			<column name="g_member" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+			<column name="g_name" type="varchar(100)">
+				<constraints nullable="false" />
+			</column>
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert-users" author="x">
+		<preConditions onFail="MARK_RAN">
+			<tableIsEmpty tableName="users"/>
+		</preConditions>
+		<insert tableName="users">
+			<column name="u_name" value="gon" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Garreth" />
+			<column name="u_lastname" value="O'Neill" />
+			<column name="u_description" value="Garreth O'Neill" />
+		</insert>
+		<insert tableName="users">
+			<column name="u_name" value="jcp" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Julian" />
+			<column name="u_lastname" value="Penfold" />
+			<column name="u_description" value="Julian Penfold" />
+		</insert>
+		<insert tableName="users">
+			<column name="u_name" value="mh" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Matt" />
+			<column name="u_lastname" value="Haith" />
+			<column name="u_description" value="Matt Haith" />
+		</insert>
+		<insert tableName="users">
+			<column name="u_name" value="rf" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Rob" />
+			<column name="u_lastname" value="Fuller" />
+			<column name="u_description" value="Rob Fuller" />
+		</insert>
+		<insert tableName="users">
+			<column name="u_name" value="sd" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Steven" />
+			<column name="u_lastname" value="Dear" />
+			<column name="u_description" value="Steven Dear" />
+		</insert>
+		<insert tableName="users">
+			<column name="u_name" value="sbh" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Simon" />
+			<column name="u_lastname" value="Howden" />
+			<column name="u_description" value="Simon Howden" />
+		</insert>
+		<insert tableName="users">
+			<column name="u_name" value="sbs" />
+			<column name="u_password" value="password1" />
+			<column name="u_firstname" value="Stuart" />
+			<column name="u_lastname" value="Stephen" />
+			<column name="u_description" value="Stuart Stephen" />
+		</insert>
+	</changeSet>
+
+	<changeSet id="insert-groups" author="x">
+		<preConditions onFail="MARK_RAN">
+			<tableIsEmpty tableName="groups"/>
+		</preConditions>
+		<insert tableName="groups">
+			<column name="g_name" value="authusers" />
+			<column name="g_description" value="Auth Users" />
+		</insert>
+	</changeSet>
+	
+	<changeSet id="insert-memberships" author="x">
+		<preConditions onFail="MARK_RAN">
+			<tableIsEmpty tableName="groupmembers"/>
+		</preConditions>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="gon" />
+			<column name="g_name" value="authusers" />
+		</insert>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="jcp" />
+			<column name="g_name" value="authusers" />
+		</insert>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="mh" />
+			<column name="g_name" value="authusers" />
+		</insert>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="rf" />
+			<column name="g_name" value="authusers" />
+		</insert>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="sd" />
+			<column name="g_name" value="authusers" />
+		</insert>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="sbh" />
+			<column name="g_name" value="authusers" />
+		</insert>
+		<insert tableName="groupmembers">
+			<column name="g_member" value="sbs" />
+			<column name="g_name" value="authusers" />
+		</insert>
+	</changeSet>
+</databaseChangeLog>

@@ -1,0 +1,18 @@
+<wls:weblogic-web-app 
+	xmlns:wls="http://xmlns.oracle.com/weblogic/weblogic-web-app" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="
+		http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd 
+		http://xmlns.oracle.com/weblogic/weblogic-web-app http://xmlns.oracle.com/weblogic/weblogic-web-app/1.4/weblogic-web-app.xsd
+	">
+	<wls:security-role-assignment>
+		<wls:role-name>authusers</wls:role-name>
+		<wls:principal-name>authusers</wls:principal-name>
+	</wls:security-role-assignment>
+	
+	<wls:session-descriptor>
+		<!-- Track session via URL rewriting. -->
+		<wls:cookies-enabled>false</wls:cookies-enabled>
+		<wls:url-rewriting-enabled>true</wls:url-rewriting-enabled>
+	</wls:session-descriptor>
+</wls:weblogic-web-app>
